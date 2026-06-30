@@ -1,41 +1,32 @@
 package main
 
-import "unicode"
-
-func collapseRepeatedPunctuation(word string) string {
-	var result []rune
-	runes := []rune(word)
-
-	for i := 0; i < len(runes); i++ {
-		current := runes[i]
-		result = append(result, current)
-
-		if isPunctuation(current) {
-			for i+1 < len(runes) && runes[i+1] == current {
-				i++
-			}
+func collapsePunctuation(word string) string {
+	result := ""
+	for i := 0; i < len(word); i++ {
+		if i > 0 && word[i] == word[i-1] && isPunctuation(word[i]) {
+			continue
 		}
+		result += string(word[i])
 	}
-	return string(result)
+	return result
 }
 
-func isPunctuation(r rune) bool {
-	return r == '!' || r == '?' || r == '.' || r == ','
+func isPunctuation(b byte) bool {
+	return b == '!' || b == '?' || b == '.' || b == ','
 }
 
-func capitalizeSentences(s string) string {
-	runes := []rune(s)
+func capitalizeFirstLetters(s string) string {
+	result := []byte(s)
 	capitalizeNext := true
 
-	for i, r := range runes {
-		if capitalizeNext && unicode.IsLetter(r) {
-			runes[i] = unicode.ToUpper(r)
+	for i := 0; i < len(result); i++ {
+		if capitalizeNext && result[i] >= 'a' && result[i] <= 'z' {
+			result[i] -= 32
 			capitalizeNext = false
 		}
-
-		if isPunctuation(r) {
+		if isPunctuation(result[i]) {
 			capitalizeNext = true
 		}
 	}
-	return string(runes)
+	return string(result)
 }

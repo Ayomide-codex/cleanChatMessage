@@ -6,11 +6,10 @@ func cleanChatMessage(message string) string {
 	words := strings.Fields(message)
 
 	for i, word := range words {
-		words[i] = collapseRepeatedPunctuation(word)
+		words[i] = collapsePunctuation(word)
 	}
 
 	cleaned := strings.Join(words, " ")
-	cleaned = capitalizeSentences(cleaned)
-
+	cleaned = capitalizeFirstLetters(cleaned)
 	return cleaned
 }
